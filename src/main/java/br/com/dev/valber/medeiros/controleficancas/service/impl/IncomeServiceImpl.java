@@ -42,13 +42,14 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    public void update(UUID id, Income dto) {
-
+    public IncomeDTO update(UUID id, IncomeRequestDTO dto) {
+        dto.setUuid(id);
+        return this.create(dto);
     }
 
     @Override
     public void delete(UUID id) {
-
+        repository.deleteById(id);
     }
 
     private List<IncomeDTO> listToDto(List<Income>entities) {

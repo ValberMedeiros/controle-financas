@@ -16,7 +16,7 @@ public interface IncomeService {
 
     public IncomeDTO create(IncomeRequestDTO income);
 
-    public void update(UUID id, Income dto);
+    public IncomeDTO update(UUID id, IncomeRequestDTO dto);
 
     public void delete(UUID id);
 
