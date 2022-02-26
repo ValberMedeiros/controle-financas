@@ -43,8 +43,10 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     public IncomeDTO update(UUID id, IncomeRequestDTO dto) {
-        dto.setUuid(id);
-        return this.create(dto);
+        repository.update(dto, id);
+        return entitieToDto(repository.findById(id)
+                .orElseThrow(EntityNotFoundException::new));
+
     }
 
     @Override

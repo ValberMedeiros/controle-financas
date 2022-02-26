@@ -10,7 +10,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,9 +18,6 @@ import java.util.UUID;
 public class IncomeRequestDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 536260004072190785L;
-
-    @ApiModelProperty(required = true, notes = "Código unico da renda", dataType = "uuid")
-    private UUID uuid;
 
     @ApiModelProperty(required = true, notes = "Data de recebimento da renda", example = "2022-03-15")
     private LocalDate receiptDate;
