@@ -1,0 +1,17 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Gradle template
+.gradle
+build/
+
+## Directory-based project format:
+.idea/
+
+# IntelliJ
+/out/
+
+### Maven template
+target/
+
+/target
+
+.iml
