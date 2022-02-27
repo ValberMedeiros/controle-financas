@@ -5,12 +5,14 @@ import br.com.dev.valber.medeiros.controleficancas.domain.request.ExpenseRequest
 import br.com.dev.valber.medeiros.controleficancas.mapper.ExpenseMapper;
 import br.com.dev.valber.medeiros.controleficancas.repository.income.ExpenseRepository;
 import br.com.dev.valber.medeiros.controleficancas.service.ExpenseService;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class ExpenseServiceImpl implements ExpenseService {
 
     private ExpenseRepository repository;

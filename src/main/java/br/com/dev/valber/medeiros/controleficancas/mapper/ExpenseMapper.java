@@ -23,8 +23,8 @@ public class ExpenseMapper {
                 .toList();
     }
 
-    public ExpenseDTO entitieToDto(Expense entitie) {
-        return modelMapper.map(entitie, ExpenseDTO.class);
+    public ExpenseDTO entitieToDto(Expense entity) {
+        return modelMapper.map(entity, ExpenseDTO.class);
     }
 
     public Expense dtoToEntity(ExpenseRequestDTO dto) {
