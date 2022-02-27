@@ -1,6 +1,7 @@
 package br.com.dev.valber.medeiros.controleficancas.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class MonthlyBalance {
     @JsonFormat(pattern = "yyyy-MM")
     private LocalDate referenceDate;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "monthlyBalance", orphanRemoval = true)
     private List<Expense> expenses = new ArrayList<>();
 
