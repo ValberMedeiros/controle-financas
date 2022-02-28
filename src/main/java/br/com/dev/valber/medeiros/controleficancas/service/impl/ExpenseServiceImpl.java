@@ -2,53 +2,59 @@ package br.com.dev.valber.medeiros.controleficancas.service.impl;
 
 import br.com.dev.valber.medeiros.controleficancas.domain.dto.ExpenseDTO;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.ExpenseRequestDTO;
-import br.com.dev.valber.medeiros.controleficancas.mapper.ExpenseMapper;
-import br.com.dev.valber.medeiros.controleficancas.repository.income.ExpenseRepository;
+import br.com.dev.valber.medeiros.controleficancas.repository.impl.ExpenseRepositoryImpl;
+import br.com.dev.valber.medeiros.controleficancas.repository.impl.MonthlyBalanceRepositoryImpl;
 import br.com.dev.valber.medeiros.controleficancas.service.ExpenseService;
+import br.com.dev.valber.medeiros.controleficancas.utils.DateUtils;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
 
-    private ExpenseRepository repository;
-    private ExpenseMapper expenseMapper;
+    private ExpenseRepositoryImpl repository;
+    private MonthlyBalanceRepositoryImpl monthlyBalanceRepository;
 
-    public ExpenseServiceImpl(ExpenseRepository repository, ExpenseMapper expenseMapper) {
+    public ExpenseServiceImpl(ExpenseRepositoryImpl repository, MonthlyBalanceRepositoryImpl monthlyBalanceRepository) {
         this.repository = repository;
-        this.expenseMapper = expenseMapper;
+        this.monthlyBalanceRepository = monthlyBalanceRepository;
     }
 
     @Override
     public List<ExpenseDTO> findAll() {
-        return expenseMapper.listToDto(repository.findAll());
+        return repository.findAll();
     }
 
     @Override
     public ExpenseDTO findById(UUID uuid) {
-        var expense = Optional.ofNullable(repository.findById(uuid)
-                .orElseThrow(() -> new EntityNotFoundException("entity.not.found")));
-        return expenseMapper.entitieToDto(expense.get());
+        return repository.findById(uuid);
     }
 
     @Override
     public ExpenseDTO update(UUID uuid, ExpenseRequestDTO requestDTO) {
+        requestDTO.setMonthlyBalanceUuid(getUuidMontlyBalance(requestDTO.getDueDate()));
         repository.update(requestDTO, uuid);
-        return expenseMapper.entitieToDto(repository.findById(uuid)
-                .orElseThrow(EntityNotFoundException::new));
+        return repository.findById(uuid);
     }
 
     @Override
     public ExpenseDTO create(ExpenseRequestDTO requestDTO) {
-        return expenseMapper.entitieToDto(repository.save(expenseMapper.dtoToEntity(requestDTO)));
+        requestDTO.setUuid(UUID.randomUUID());
+        requestDTO.setMonthlyBalanceUuid(getUuidMontlyBalance(requestDTO.getDueDate()));
+        repository.create(requestDTO);
+        return findById(requestDTO.getUuid());
     }
 
     @Override
     public void delete(UUID uuid) {
-        repository.deleteById(uuid);
+        repository.delete(uuid);
+    }
+
+    private UUID getUuidMontlyBalance(LocalDate referenceDate) {
+        return monthlyBalanceRepository
+                .getUuidMonthlyBalanceByReferenceDate(DateUtils.replaceDate(referenceDate.toString()));
     }
 }
