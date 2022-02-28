@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
@@ -15,7 +17,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Expense extends Entry {
+public class Expense extends Entry implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -4213328515858626646L;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "O campo expenseStatus é obrigatório")
