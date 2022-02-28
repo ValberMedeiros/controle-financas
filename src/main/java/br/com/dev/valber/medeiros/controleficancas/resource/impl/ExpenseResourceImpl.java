@@ -93,4 +93,20 @@ public class ExpenseResourceImpl implements ExpenseResource {
         expenseService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Override
+    @ApiOperation(value = "Busca uma renda existente por id", tags = {"Expense creation"})
+    @ApiResponses(value = {
+            @ApiResponse(code = 401, message = "Unauthorized", response = DefaultError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = DefaultError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = DefaultError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = DefaultError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = DefaultError.class),
+    })
+    public ResponseEntity<ObjectDataResponse<ExpenseDTO>> findById(
+            @ApiParam(required = true, value = "UUID da renda a ser buscada.")
+            @PathVariable() UUID id
+    ) {
+        return ResponseEntity.ok(ObjectDataResponse.build(expenseService.findById(id)));
+    }
 }

@@ -16,6 +16,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="controle-ficancas" />
+          <factory-entry name="entityManagerFactory" value="5dbf06ed-37bb-420e-8aef-2c1a5e9aec0c" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>
