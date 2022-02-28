@@ -72,7 +72,7 @@ public class IncomeResourceImpl implements IncomeResource {
             @PathVariable UUID id,
             @Valid @RequestBody IncomeRequestDTO incomeRequestDTO
     ) {
-        return ResponseEntity.ok().body(ObjectDataResponse.build(incomeService.update(id, incomeRequestDTO)));
+        return ResponseEntity.ok().body(ObjectDataResponse.build(incomeService.update(incomeRequestDTO, id)));
     }
 
     @Override

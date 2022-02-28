@@ -30,4 +30,9 @@ public interface ExpenseResource {
             @PathVariable UUID id
     );
 
+    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ObjectDataResponse<ExpenseDTO>> findById(
+            @PathVariable UUID id
+    );
+
 }
