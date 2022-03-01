@@ -36,4 +36,7 @@ public class MonthlyBalance implements Serializable {
     @OneToMany(mappedBy = "monthlyBalance", orphanRemoval = true)
     private List<Expense> expenses = new ArrayList<>();
 
+    @OneToMany(mappedBy = "monthlyBalance", orphanRemoval = true)
+    private List<Income> incomes = new ArrayList<>();
+
 }

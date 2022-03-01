@@ -1,9 +1,6 @@
 package br.com.dev.valber.medeiros.controleficancas.repository.impl;
 
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.ExpenseDTO;
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.MonthlyBalanceDTO;
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.MonthlyBalanceDateReferenceDTO;
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.TotalBalanceExpenseDTO;
+import br.com.dev.valber.medeiros.controleficancas.domain.dto.*;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.MonthlyBalanceRequestDTO;
 import br.com.dev.valber.medeiros.controleficancas.repository.MonthlyBalanceRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,14 +14,14 @@ import java.util.UUID;
 public class MonthlyBalanceRepositoryImpl implements MonthlyBalanceRepository {
 
     public static final String REFERENCE_DATE = "reference_date";
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public MonthlyBalanceRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public TotalBalanceExpenseDTO getTotalBalanceExpense(LocalDate reference) {
+    public TotalBalanceDTO getTotalBalanceExpense(LocalDate reference) {
         String sql =
                 "SELECT monthly_balance.uuid, monthly_balance.reference_date, sum(expense.amount) as total_amount " +
                 "FROM monthly_balance " +
@@ -32,7 +29,7 @@ public class MonthlyBalanceRepositoryImpl implements MonthlyBalanceRepository {
                 "WHERE monthly_balance.reference_date = ?" +
                 "GROUP BY monthly_balance.uuid";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum)
-                -> new TotalBalanceExpenseDTO(
+                -> new TotalBalanceDTO(
                         UUID.fromString(rs.getString("uuid")),
                         rs.getDate(REFERENCE_DATE).toLocalDate(),
                         rs.getBigDecimal("total_amount")
@@ -113,4 +110,41 @@ public class MonthlyBalanceRepositoryImpl implements MonthlyBalanceRepository {
                 -> UUID.fromString(rs.getString("uuid"))
         , reference);
     }
+
+    @Override
+    public List<IncomeDTO> getIncomesForMonthlyBalance(LocalDate reference) {
+        String sql =
+                "SELECT income.uuid, income.receipt_date, income.description, income.amount, " +
+                        "monthly_balance.reference_date as monthlyBalanceReferenceDate " +
+                        "FROM income " +
+                        "INNER JOIN monthly_balance " +
+                        "ON income.monthly_balance_uuid = monthly_balance.uuid " +
+                        "WHERE monthly_balance.reference_date = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum)
+                -> new IncomeDTO(
+                        UUID.fromString(rs.getString("uuid")),
+                        rs.getDate("receipt_date").toLocalDate(),
+                        rs.getString("description"),
+                        rs.getBigDecimal("amount"),
+                        rs.getDate("monthlyBalanceReferenceDate").toLocalDate()
+                ), reference
+        );
+    }
+
+    @Override
+    public TotalBalanceDTO getTotalBalanceIncomes(LocalDate reference) {
+        String sql =
+                "SELECT monthly_balance.uuid, monthly_balance.reference_date, sum(income.amount) as total_amount " +
+                        "FROM monthly_balance " +
+                        "INNER JOIN income ON monthly_balance.uuid = income.monthly_balance_uuid " +
+                        "WHERE monthly_balance.reference_date = ?" +
+                        "GROUP BY monthly_balance.uuid";
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum)
+                -> new TotalBalanceDTO(
+                UUID.fromString(rs.getString("uuid")),
+                rs.getDate(REFERENCE_DATE).toLocalDate(),
+                rs.getBigDecimal("total_amount")
+        ), reference);
+    }
+
 }

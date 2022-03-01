@@ -24,8 +24,10 @@ insert into expense (uuid, amount, description, due_date, expense_status, recurr
 
 insert into expense (uuid, amount, description, due_date, expense_status, recurrent, monthly_balance_uuid) values ('8d4f60b3-9dc2-4177-ab46-1640aa4d25af', 780.00, 'Provi Cursos', '2022-04-05', 'PENDING', false, 'a9f8edb1-7ca0-4b9a-bb99-9ec72b532c75');
 
-insert into income (uuid, amount, description, receipt_date) values ('05111c30-64cb-4e5c-a581-d8e746de6257', 550.95, 'Aluguel', '2022-03-10');
+insert into income (uuid, amount, description, receipt_date, monthly_balance_uuid) values ('05111c30-64cb-4e5c-a581-d8e746de6257', 550.95, 'Aluguel', '2022-03-10', '3de67bc9-d50a-4b46-8f03-dedaa0eabd3b');
 
-insert into income (uuid, amount, description, receipt_date) values ('4d014989-091f-4ffb-8b9b-51489089ceec', 5896.95, 'Aluguel', '2022-03-10');
+insert into income (uuid, amount, description, receipt_date, monthly_balance_uuid) values ('4d014989-091f-4ffb-8b9b-51489089ceec', 5896.95, 'Aluguel', '2022-03-10', '3de67bc9-d50a-4b46-8f03-dedaa0eabd3b');
 
-insert into income (uuid, amount, description, receipt_date) values ('06a681a8-055f-4701-ad7c-1c3b012ae4a1', 299.95, 'Juros', '2022-03-10');
+insert into income (uuid, amount, description, receipt_date, monthly_balance_uuid) values ('06a681a8-055f-4701-ad7c-1c3b012ae4a1', 299.95, 'Juros', '2022-03-10', '3de67bc9-d50a-4b46-8f03-dedaa0eabd3b');
+
+insert into income (uuid, amount, description, receipt_date, monthly_balance_uuid) values ('d71f0a79-c245-407b-97ed-eaac9a344319', 199.95, 'Poupança', '2022-04-05', 'a9f8edb1-7ca0-4b9a-bb99-9ec72b532c75');
