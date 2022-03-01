@@ -1,5 +1,6 @@
 package br.com.dev.valber.medeiros.controleficancas.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,4 +33,15 @@ public class IncomeDTO implements Serializable {
 
     @ApiModelProperty(notes = "Valor da renda", example = "890.60")
     private BigDecimal amount;
+
+    @JsonFormat(pattern = "yyyy-MM")
+    @ApiModelProperty(notes = "Ano/MÊs do balanço referente a despesa")
+    private LocalDate monthlyBalanceReferenceDate;
+
+    public IncomeDTO(UUID uuid, LocalDate receiptDate, String description, BigDecimal amount) {
+        this.uuid = uuid;
+        this.receiptDate = receiptDate;
+        this.description = description;
+        this.amount = amount;
+    }
 }

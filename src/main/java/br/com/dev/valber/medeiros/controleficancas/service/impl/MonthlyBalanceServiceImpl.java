@@ -1,9 +1,6 @@
 package br.com.dev.valber.medeiros.controleficancas.service.impl;
 
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.ExpenseDTO;
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.MonthlyBalanceDTO;
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.MonthlyBalanceDateReferenceDTO;
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.TotalBalanceExpenseDTO;
+import br.com.dev.valber.medeiros.controleficancas.domain.dto.*;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.MonthlyBalanceRequestDTO;
 import br.com.dev.valber.medeiros.controleficancas.repository.impl.MonthlyBalanceRepositoryImpl;
 import br.com.dev.valber.medeiros.controleficancas.service.MonthlyBalanceService;
@@ -35,7 +32,7 @@ public class MonthlyBalanceServiceImpl implements MonthlyBalanceService {
     }
 
     @Override
-    public TotalBalanceExpenseDTO getTotalBalanceExpense(String referenceDate) {
+    public TotalBalanceDTO getTotalBalanceExpense(String referenceDate) {
         return repository.getTotalBalanceExpense(stringToDate(referenceDate));
     }
 
@@ -45,5 +42,15 @@ public class MonthlyBalanceServiceImpl implements MonthlyBalanceService {
         monthlyBalanceRequestDTO.setReferenceDate(complementDate(monthlyBalanceRequestDTO.getReferenceDate()));
 
         return repository.getMonthlyBalance(monthlyBalanceRequestDTO.getUuid());
+    }
+
+    @Override
+    public List<IncomeDTO> getIncomesForMonthlyBalance(String referenceDate) {
+        return repository.getIncomesForMonthlyBalance(stringToDate(referenceDate));
+    }
+
+    @Override
+    public TotalBalanceDTO getTotalBalanceIncome(String referenceDate) {
+        return repository.getTotalBalanceIncomes(stringToDate(referenceDate));
     }
 }
