@@ -40,7 +40,7 @@ public class MonthlyBalanceServiceImpl implements MonthlyBalanceService {
     public MonthlyBalanceDTO create(MonthlyBalanceRequestDTO monthlyBalanceRequestDTO) {
         monthlyBalanceRequestDTO.setUuid(UUID.randomUUID());
         monthlyBalanceRequestDTO.setReferenceDate(complementDate(monthlyBalanceRequestDTO.getReferenceDate()));
-
+        repository.create(monthlyBalanceRequestDTO);
         return repository.getMonthlyBalance(monthlyBalanceRequestDTO.getUuid());
     }
 
