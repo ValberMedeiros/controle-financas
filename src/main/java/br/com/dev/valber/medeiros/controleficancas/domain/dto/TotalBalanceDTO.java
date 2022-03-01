@@ -15,7 +15,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TotalBalanceExpenseDTO {
+public class TotalBalanceDTO {
 
     @ApiModelProperty(value = "UUID do balanço de dívidas do mês")
     private UUID uuid;
@@ -25,6 +25,6 @@ public class TotalBalanceExpenseDTO {
     private LocalDate referenceDate;
 
     @ApiModelProperty(value = "Valor total de dívidas do mês")
-    private BigDecimal totalAmountExpense;
+    private BigDecimal totalAmount;
 
 }

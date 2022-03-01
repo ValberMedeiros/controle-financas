@@ -1,9 +1,6 @@
 package br.com.dev.valber.medeiros.controleficancas.repository;
 
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.ExpenseDTO;
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.MonthlyBalanceDTO;
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.MonthlyBalanceDateReferenceDTO;
-import br.com.dev.valber.medeiros.controleficancas.domain.dto.TotalBalanceExpenseDTO;
+import br.com.dev.valber.medeiros.controleficancas.domain.dto.*;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.MonthlyBalanceRequestDTO;
 
 import java.time.LocalDate;
@@ -12,7 +9,7 @@ import java.util.UUID;
 
 public interface MonthlyBalanceRepository {
 
-    TotalBalanceExpenseDTO getTotalBalanceExpense(LocalDate reference);
+    TotalBalanceDTO getTotalBalanceExpense(LocalDate reference);
 
     List<ExpenseDTO> getExpensesForMonthlyBalances(LocalDate reference);
 
@@ -27,5 +24,9 @@ public interface MonthlyBalanceRepository {
     MonthlyBalanceDTO getMonthlyBalance(UUID uuid);
 
     UUID getUuidMonthlyBalanceByReferenceDate(LocalDate reference);
+
+    List<IncomeDTO> getIncomesForMonthlyBalance(LocalDate reference);
+
+    public TotalBalanceDTO getTotalBalanceIncomes(LocalDate reference);
 
 }
