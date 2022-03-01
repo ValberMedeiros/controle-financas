@@ -10,7 +10,7 @@
     </parent>
     <groupId>br.com.dev.valber.medeiros</groupId>
     <artifactId>controle-ficancas</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>controle-ficancas</name>
     <description>controle-ficancas</description>
     <properties>
