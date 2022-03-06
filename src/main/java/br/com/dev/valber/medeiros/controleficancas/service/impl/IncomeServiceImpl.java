@@ -2,8 +2,10 @@ package br.com.dev.valber.medeiros.controleficancas.service.impl;
 
 import br.com.dev.valber.medeiros.controleficancas.domain.dto.IncomeDTO;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.IncomeRequestDTO;
+import br.com.dev.valber.medeiros.controleficancas.exception.BusinessException;
 import br.com.dev.valber.medeiros.controleficancas.repository.impl.IncomeRepositoryImpl;
 import br.com.dev.valber.medeiros.controleficancas.service.IncomeService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +21,12 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    public IncomeDTO findById(UUID id) {
-        return null;
+    public IncomeDTO findById(UUID uuid) {
+        try {
+            return repository.findById(uuid);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new BusinessException(String.format("Income with uuid %s not found.", uuid), "entity.not.found.exception");
+        }
     }
 
     @Override
@@ -36,13 +42,18 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    public IncomeDTO update(IncomeRequestDTO dto, UUID id) {
-        repository.update(dto, id);
-        return repository.findById(id);
+    public IncomeDTO update(IncomeRequestDTO dto, UUID uuid) {
+        try {
+            repository.update(dto, uuid);
+            return repository.findById(uuid);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new BusinessException(String.format("Income with uuid %s not found.", uuid), "entity.not.found.exception");
+        }
     }
 
     @Override
     public void delete(UUID uuid) {
+        findById(uuid);
         repository.delete(uuid);
     }
 

@@ -3,7 +3,7 @@ package br.com.dev.valber.medeiros.controleficancas.resource.impl;
 import br.com.dev.valber.medeiros.controleficancas.domain.dto.*;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.MonthlyBalanceRequestDTO;
 import br.com.dev.valber.medeiros.controleficancas.domain.response.ObjectDataResponse;
-import br.com.dev.valber.medeiros.controleficancas.exception.error.DefaultError;
+import br.com.dev.valber.medeiros.controleficancas.exception.error.StandardError;
 import br.com.dev.valber.medeiros.controleficancas.resource.MonthlyBalanceResource;
 import br.com.dev.valber.medeiros.controleficancas.service.impl.MonthlyBalanceServiceImpl;
 import io.swagger.annotations.*;
@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -28,11 +29,11 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     @Override
     @ApiOperation(value = "Retorna a lista de ano/mes referência de balanço", tags = {"Balance creation"})
     @ApiResponses(value = {
-            @ApiResponse(code = 401, message = "Unauthorized", response = DefaultError.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = DefaultError.class),
-            @ApiResponse(code = 404, message = "Not Found", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Unprocessable Entity", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Internal Server Error", response = DefaultError.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
     })
     @GetMapping(value = "/references", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ObjectDataResponse<List<MonthlyBalanceDateReferenceDTO>>> getMonthlyBalanceDateReferences() {
@@ -42,11 +43,11 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     @Override
     @ApiOperation(value = "Retorna a lista de despesas referente a um ano/mês de balanço", tags = {"Balance creation"})
     @ApiResponses(value = {
-            @ApiResponse(code = 401, message = "Unauthorized", response = DefaultError.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = DefaultError.class),
-            @ApiResponse(code = 404, message = "Not Found", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Unprocessable Entity", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Internal Server Error", response = DefaultError.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
     })
     @GetMapping(value = "/references/expenses", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ObjectDataResponse<List<ExpenseDTO>>> getExpensesForMonthlyBalances(
@@ -59,11 +60,11 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     @Override
     @ApiOperation(value = "Retorna o balanço de despesas referente a um ano/mês", tags = {"Balance creation"})
     @ApiResponses(value = {
-            @ApiResponse(code = 401, message = "Unauthorized", response = DefaultError.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = DefaultError.class),
-            @ApiResponse(code = 404, message = "Not Found", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Unprocessable Entity", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Internal Server Error", response = DefaultError.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
     })
     @GetMapping(value = "/references/balance/expense", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ObjectDataResponse<TotalBalanceDTO>> getTotalBalanceExpense(
@@ -75,15 +76,15 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     @Override
     @ApiOperation(value = "Cria um novo balanço referente a um ano/mês", tags = {"Balance creation"})
     @ApiResponses(value = {
-            @ApiResponse(code = 401, message = "Unauthorized", response = DefaultError.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = DefaultError.class),
-            @ApiResponse(code = 404, message = "Not Found", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Unprocessable Entity", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Internal Server Error", response = DefaultError.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ObjectDataResponse<MonthlyBalanceDTO>> create(
-            @RequestBody() MonthlyBalanceRequestDTO monthlyBalanceRequestDTO
+            @Valid @RequestBody() MonthlyBalanceRequestDTO monthlyBalanceRequestDTO
     ) {
         return ResponseEntity.created(URI.create("")).body(ObjectDataResponse.build(service.create(monthlyBalanceRequestDTO)));
     }
@@ -91,11 +92,11 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     @Override
     @ApiOperation(value = "Retorna a lista de rendas referente aum ano/mês de balanço", tags = {"Balance creation"})
     @ApiResponses(value = {
-            @ApiResponse(code = 401, message = "Unauthorized", response = DefaultError.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = DefaultError.class),
-            @ApiResponse(code = 404, message = "Not Found", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Unprocessable Entity", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Internal Server Error", response = DefaultError.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
     })
     @GetMapping("/references/incomes")
     public ResponseEntity<ObjectDataResponse<List<IncomeDTO>>> getIncomesForMonthlyBalances(
@@ -107,11 +108,11 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     @Override
     @ApiOperation(value = "Retorna o balanço de rendas referente a um ano/mês", tags = {"Balance creation"})
     @ApiResponses(value = {
-            @ApiResponse(code = 401, message = "Unauthorized", response = DefaultError.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = DefaultError.class),
-            @ApiResponse(code = 404, message = "Not Found", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Unprocessable Entity", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Internal Server Error", response = DefaultError.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
     })
     @GetMapping(value = "/references/balance/incomes", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ObjectDataResponse<TotalBalanceDTO>> getTotalBalanceIncomes(
