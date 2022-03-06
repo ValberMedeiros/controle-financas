@@ -2,10 +2,12 @@ package br.com.dev.valber.medeiros.controleficancas.service.impl;
 
 import br.com.dev.valber.medeiros.controleficancas.domain.dto.ExpenseDTO;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.ExpenseRequestDTO;
+import br.com.dev.valber.medeiros.controleficancas.exception.BusinessException;
 import br.com.dev.valber.medeiros.controleficancas.repository.impl.ExpenseRepositoryImpl;
 import br.com.dev.valber.medeiros.controleficancas.repository.impl.MonthlyBalanceRepositoryImpl;
 import br.com.dev.valber.medeiros.controleficancas.service.ExpenseService;
 import br.com.dev.valber.medeiros.controleficancas.utils.DateUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,14 +32,23 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public ExpenseDTO findById(UUID uuid) {
-        return repository.findById(uuid);
+        try {
+            return repository.findById(uuid);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new BusinessException(String.format("Expense with uuid %s not found.", uuid), "entity.not.found.exception");
+        }
     }
 
     @Override
     public ExpenseDTO update(UUID uuid, ExpenseRequestDTO requestDTO) {
-        requestDTO.setMonthlyBalanceUuid(getUuidMontlyBalance(requestDTO.getDueDate()));
-        repository.update(requestDTO, uuid);
-        return repository.findById(uuid);
+        try{
+            requestDTO.setMonthlyBalanceUuid(getUuidMontlyBalance(requestDTO.getDueDate()));
+            repository.update(requestDTO, uuid);
+            return repository.findById(uuid);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new BusinessException(String.format("Expense with uuid %s not found.", uuid), "entity.not.found.exception");
+        }
+
     }
 
     @Override
@@ -50,6 +61,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public void delete(UUID uuid) {
+        findById(uuid);
         repository.delete(uuid);
     }
 
