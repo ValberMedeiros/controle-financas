@@ -3,7 +3,7 @@ package br.com.dev.valber.medeiros.controleficancas.resource.impl;
 import br.com.dev.valber.medeiros.controleficancas.domain.dto.IncomeDTO;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.IncomeRequestDTO;
 import br.com.dev.valber.medeiros.controleficancas.domain.response.ObjectDataResponse;
-import br.com.dev.valber.medeiros.controleficancas.exception.error.DefaultError;
+import br.com.dev.valber.medeiros.controleficancas.exception.error.StandardError;
 import br.com.dev.valber.medeiros.controleficancas.resource.IncomeResource;
 import br.com.dev.valber.medeiros.controleficancas.service.impl.IncomeServiceImpl;
 import io.swagger.annotations.*;
@@ -30,11 +30,11 @@ public class IncomeResourceImpl implements IncomeResource {
     @Override
     @ApiOperation(value = "Retorna a lista de rendas", tags = {"Income creation"})
     @ApiResponses(value = {
-            @ApiResponse(code = 401, message = "Unauthorized", response = DefaultError.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = DefaultError.class),
-            @ApiResponse(code = 404, message = "Not Found", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Unprocessable Entity", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Internal Server Error", response = DefaultError.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ObjectDataResponse<List<IncomeDTO>>> findAll() {
@@ -45,11 +45,11 @@ public class IncomeResourceImpl implements IncomeResource {
     @ApiOperation(value = "Cadastra uma nova renda", tags = {"Income creation"})
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Created", response = ObjectDataResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = DefaultError.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = DefaultError.class),
-            @ApiResponse(code = 404, message = "Not Found", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Unprocessable Entity", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Internal Server Error", response = DefaultError.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ObjectDataResponse<IncomeDTO>> create(@Valid @RequestBody IncomeRequestDTO incomeRequestDTO) {
@@ -60,11 +60,11 @@ public class IncomeResourceImpl implements IncomeResource {
     @ApiOperation(value = "Atualiza uma renda existente", tags = {"Income creation"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ObjectDataResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = DefaultError.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = DefaultError.class),
-            @ApiResponse(code = 404, message = "Not Found", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Unprocessable Entity", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Internal Server Error", response = DefaultError.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
     })
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ObjectDataResponse<IncomeDTO>> update(
@@ -79,11 +79,11 @@ public class IncomeResourceImpl implements IncomeResource {
     @ApiOperation(value = "Deleta uma renda existente", tags = {"Income creation"})
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "No content"),
-            @ApiResponse(code = 401, message = "Unauthorized", response = DefaultError.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = DefaultError.class),
-            @ApiResponse(code = 404, message = "Not Found", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Unprocessable Entity", response = DefaultError.class),
-            @ApiResponse(code = 422, message = "Internal Server Error", response = DefaultError.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
     })
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(
