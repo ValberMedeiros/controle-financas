@@ -29,6 +29,7 @@ public abstract class Entry implements Serializable {
     private String description;
 
     @NotNull(message = "O campo amount é obrigatório")
+
     private BigDecimal amount;
 
 }

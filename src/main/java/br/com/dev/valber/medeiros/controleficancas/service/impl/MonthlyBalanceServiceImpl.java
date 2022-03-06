@@ -2,10 +2,13 @@ package br.com.dev.valber.medeiros.controleficancas.service.impl;
 
 import br.com.dev.valber.medeiros.controleficancas.domain.dto.*;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.MonthlyBalanceRequestDTO;
+import br.com.dev.valber.medeiros.controleficancas.exception.BusinessException;
 import br.com.dev.valber.medeiros.controleficancas.repository.impl.MonthlyBalanceRepositoryImpl;
 import br.com.dev.valber.medeiros.controleficancas.service.MonthlyBalanceService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,12 +31,20 @@ public class MonthlyBalanceServiceImpl implements MonthlyBalanceService {
 
     @Override
     public List<ExpenseDTO> getExpensesForMonthlyBalances(String reference) {
-        return repository.getExpensesForMonthlyBalances(stringToDate(reference));
+        try{
+            return repository.getExpensesForMonthlyBalances(stringToDate(reference));
+        } catch (EmptyResultDataAccessException ex) {
+            return new ArrayList<>();
+        }
     }
 
     @Override
     public TotalBalanceDTO getTotalBalanceExpense(String referenceDate) {
-        return repository.getTotalBalanceExpense(stringToDate(referenceDate));
+        try{
+            return repository.getTotalBalanceExpense(stringToDate(referenceDate));
+        } catch (EmptyResultDataAccessException ex) {
+            throw new BusinessException(String.format("Total balance expenses for reference date %s not found.", referenceDate), "entity.not.found.exception");
+        }
     }
 
     @Override
@@ -46,11 +57,19 @@ public class MonthlyBalanceServiceImpl implements MonthlyBalanceService {
 
     @Override
     public List<IncomeDTO> getIncomesForMonthlyBalance(String referenceDate) {
-        return repository.getIncomesForMonthlyBalance(stringToDate(referenceDate));
+        try {
+            return repository.getIncomesForMonthlyBalance(stringToDate(referenceDate));
+        } catch (EmptyResultDataAccessException ex) {
+            return new ArrayList<>();
+        }
     }
 
     @Override
     public TotalBalanceDTO getTotalBalanceIncome(String referenceDate) {
-        return repository.getTotalBalanceIncomes(stringToDate(referenceDate));
+        try {
+            return repository.getTotalBalanceIncomes(stringToDate(referenceDate));
+        } catch (EmptyResultDataAccessException ex) {
+            throw new BusinessException(String.format("Total balance incomes for reference date %s not found.", referenceDate), "entity.not.found.exception");
+        }
     }
 }
