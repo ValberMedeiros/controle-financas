@@ -28,7 +28,11 @@ public class ExpenseResourceImpl implements ExpenseResource {
     }
 
     @Override
-    @ApiOperation(value = "Retorna a lista de rendas", tags = {"Expense creation"})
+    @ApiOperation(
+            value = "Retorna a lista de rendas",
+            tags = {"Expense creation"},
+            authorizations = {@Authorization("JWT")}
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
             @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
@@ -42,7 +46,11 @@ public class ExpenseResourceImpl implements ExpenseResource {
     }
 
     @Override
-    @ApiOperation(value = "Cadastra uma nova renda", tags = {"Expense creation"})
+    @ApiOperation(
+            value = "Cadastra uma nova renda",
+            tags = {"Expense creation"},
+            authorizations = {@Authorization("JWT")}
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Created", response = ObjectDataResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
@@ -57,7 +65,11 @@ public class ExpenseResourceImpl implements ExpenseResource {
     }
 
     @Override
-    @ApiOperation(value = "Atualiza uma renda existente", tags = {"Expense creation"})
+    @ApiOperation(
+            value = "Atualiza uma renda existente",
+            tags = {"Expense creation"},
+            authorizations = {@Authorization("JWT")}
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ObjectDataResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
@@ -76,7 +88,11 @@ public class ExpenseResourceImpl implements ExpenseResource {
     }
 
     @Override
-    @ApiOperation(value = "Deleta uma renda existente", tags = {"Expense creation"})
+    @ApiOperation(
+            value = "Deleta uma renda existente",
+            tags = {"Expense creation"},
+            authorizations = {@Authorization("JWT")}
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "No content"),
             @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
@@ -95,7 +111,11 @@ public class ExpenseResourceImpl implements ExpenseResource {
     }
 
     @Override
-    @ApiOperation(value = "Busca uma renda existente por id", tags = {"Expense creation"})
+    @ApiOperation(
+            value = "Busca uma renda existente por id",
+            tags = {"Expense creation"},
+            authorizations = {@Authorization("JWT")}
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
             @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),

@@ -27,7 +27,11 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     }
 
     @Override
-    @ApiOperation(value = "Retorna a lista de ano/mes referência de balanço", tags = {"Balance creation"})
+    @ApiOperation(
+            value = "Retorna a lista de ano/mes referência de balanço",
+            tags = {"Balance creation"},
+            authorizations = {@Authorization("JWT")}
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
             @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
@@ -41,7 +45,11 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     }
 
     @Override
-    @ApiOperation(value = "Retorna a lista de despesas referente a um ano/mês de balanço", tags = {"Balance creation"})
+    @ApiOperation(
+            value = "Retorna a lista de despesas referente a um ano/mês de balanço",
+            tags = {"Balance creation"},
+            authorizations = {@Authorization("JWT")}
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
             @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
@@ -58,7 +66,11 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     }
 
     @Override
-    @ApiOperation(value = "Retorna o balanço de despesas referente a um ano/mês", tags = {"Balance creation"})
+    @ApiOperation(
+            value = "Retorna o balanço de despesas referente a um ano/mês",
+            tags = {"Balance creation"},
+            authorizations = {@Authorization("JWT")}
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
             @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
@@ -74,7 +86,11 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     }
 
     @Override
-    @ApiOperation(value = "Cria um novo balanço referente a um ano/mês", tags = {"Balance creation"})
+    @ApiOperation(
+            value = "Cria um novo balanço referente a um ano/mês",
+            tags = {"Balance creation"},
+            authorizations = {@Authorization("JWT")}
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
             @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
@@ -90,7 +106,11 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     }
 
     @Override
-    @ApiOperation(value = "Retorna a lista de rendas referente aum ano/mês de balanço", tags = {"Balance creation"})
+    @ApiOperation(
+            value = "Retorna a lista de rendas referente aum ano/mês de balanço",
+            tags = {"Balance creation"},
+            authorizations = {@Authorization("JWT")}
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
             @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
@@ -106,7 +126,11 @@ public class MonthlyBalanceResourceImpl implements MonthlyBalanceResource {
     }
 
     @Override
-    @ApiOperation(value = "Retorna o balanço de rendas referente a um ano/mês", tags = {"Balance creation"})
+    @ApiOperation(
+            value = "Retorna o balanço de rendas referente a um ano/mês",
+            tags = {"Balance creation"},
+            authorizations = {@Authorization("JWT")}
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
             @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
