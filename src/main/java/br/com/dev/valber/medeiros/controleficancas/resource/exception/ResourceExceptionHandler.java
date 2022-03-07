@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -33,6 +34,13 @@ public class ResourceExceptionHandler {
         var status = HttpStatus.BAD_REQUEST;
         String message = handleInvalidFormat((InvalidFormatException) ex.getCause());
         var error = getStandardError(status, request, message, "validation.exception");
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<StandardError> userNotFoundHandler(UsernameNotFoundException ex, HttpServletRequest request) {
+        var status = HttpStatus.NOT_FOUND;
+        var error = getStandardError(status, request, ex.getMessage(), "user.not.found");
         return ResponseEntity.status(status).body(error);
     }
 
