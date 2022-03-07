@@ -11,11 +11,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -126,5 +129,23 @@ public class UserResourceImpl implements UserResource {
             @ApiParam(required = true, value = "Username a ser buscado.")
             @PathVariable String username) {
         return ResponseEntity.ok(ObjectDataResponse.build(userService.findByUsername(username)));
+    }
+
+    @Override
+    @ApiOperation(
+            value = "Recupera novo access_token",
+            tags = {"User creation"},
+            authorizations = {@Authorization("JWT")}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
+    })
+    @GetMapping("/token/refresh")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        userService.getAccessToken(request, response);
     }
 }

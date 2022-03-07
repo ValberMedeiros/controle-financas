@@ -18,10 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class JWTAuthenticatorFilter extends UsernamePasswordAuthenticationFilter {
 
-    public static final int TOKEN_EXPIRATION = 600_000;
     public static final String TOKEN_KEY = "${token.key}";
 
     private final AuthenticationManager authenticationManager;
@@ -47,12 +50,24 @@ public class JWTAuthenticatorFilter extends UsernamePasswordAuthenticationFilter
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         var userDetails = (UserDetailsData) authResult.getPrincipal();
-        String jwt = JWT.create()
+        String accessToken = JWT.create()
                 .withSubject(userDetails.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 10000))
+                .withIssuer(request.getRequestURI())
                 .sign(Algorithm.HMAC512(TOKEN_KEY));
-        response.getWriter().write(jwt);
-        response.getWriter().flush();
+
+        String refreshToken = JWT.create()
+                .withSubject(userDetails.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+                .withIssuer(request.getRequestURI())
+                .sign(Algorithm.HMAC512(TOKEN_KEY));
+
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put("access_token", accessToken);
+        tokens.put("refresh_token", refreshToken);
+        response.setContentType(APPLICATION_JSON_VALUE);
+
+        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 
 }

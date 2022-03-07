@@ -7,7 +7,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
@@ -36,4 +39,6 @@ public interface UserResource {
             @PathVariable String username
     );
 
+    @PostMapping(value = "/token/refresh", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

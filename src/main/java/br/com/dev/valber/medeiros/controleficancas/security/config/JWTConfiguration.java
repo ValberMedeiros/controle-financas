@@ -45,14 +45,17 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        JWTAuthenticatorFilter jwtAuthenticatorFilter = new JWTAuthenticatorFilter(authenticationManager());
+        jwtAuthenticatorFilter.setFilterProcessesUrl("/api/login");
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/api/login/**").permitAll()
+                .antMatchers("/api/users/token/refresh").permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new JWTAuthenticatorFilter(authenticationManager()))
+                .addFilter(jwtAuthenticatorFilter)
                 .addFilter(new JWTValidationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
