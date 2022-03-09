@@ -1,6 +1,8 @@
 package br.com.dev.valber.medeiros.controleficancas.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,6 +36,8 @@ public class ExpenseDTO implements Serializable {
     private Boolean recurrent;
 
     @ApiModelProperty(notes = "Data de vencimento da despesa")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd ")
     private LocalDate dueDate;
 
     @JsonFormat(pattern = "yyyy-MM")
