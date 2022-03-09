@@ -1,6 +1,7 @@
 package br.com.dev.valber.medeiros.controleficancas.repository.impl;
 
 import br.com.dev.valber.medeiros.controleficancas.domain.dto.ExpenseDTO;
+import br.com.dev.valber.medeiros.controleficancas.domain.enums.ExpenseStatus;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.ExpenseRequestDTO;
 import br.com.dev.valber.medeiros.controleficancas.repository.ExpenseRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -86,5 +87,13 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
                 entity.getDueDate(), entity.getExpenseStatus().toString(), entity.getRecurrent(),
                 entity.getMonthlyBalanceUuid(), uuid
         );
+    }
+
+    @Override
+    public int updateStatus(ExpenseStatus status, UUID uuid) {
+        String sql =
+                "UPDATE expense SET expense_status = ? WHERE uuid = ?";
+
+        return jdbcTemplate.update(sql, status.name(), uuid);
     }
 }

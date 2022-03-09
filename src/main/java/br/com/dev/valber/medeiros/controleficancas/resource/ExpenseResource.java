@@ -35,4 +35,10 @@ public interface ExpenseResource {
             @PathVariable UUID id
     );
 
+    @PutMapping("/{uuid}/status/{status}/status/{status}")
+    public ResponseEntity<Void> updateStatus(
+            @PathVariable String status,
+            @PathVariable UUID uuid
+    );
+
 }

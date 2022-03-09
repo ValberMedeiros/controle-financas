@@ -1,6 +1,7 @@
 package br.com.dev.valber.medeiros.controleficancas.service.impl;
 
 import br.com.dev.valber.medeiros.controleficancas.domain.dto.ExpenseDTO;
+import br.com.dev.valber.medeiros.controleficancas.domain.enums.ExpenseStatus;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.ExpenseRequestDTO;
 import br.com.dev.valber.medeiros.controleficancas.exception.BusinessException;
 import br.com.dev.valber.medeiros.controleficancas.repository.impl.ExpenseRepositoryImpl;
@@ -63,6 +64,12 @@ public class ExpenseServiceImpl implements ExpenseService {
     public void delete(UUID uuid) {
         findById(uuid);
         repository.delete(uuid);
+    }
+
+    @Override
+    public void updateExpenseStatus(String expenseStatus, UUID uuid) {
+        findById(uuid);
+        repository.updateStatus(ExpenseStatus.valueOf(expenseStatus), uuid);
     }
 
     private UUID getUuidMontlyBalance(LocalDate referenceDate) {
