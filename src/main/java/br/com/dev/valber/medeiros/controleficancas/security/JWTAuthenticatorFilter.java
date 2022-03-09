@@ -52,7 +52,7 @@ public class JWTAuthenticatorFilter extends UsernamePasswordAuthenticationFilter
         var userDetails = (UserDetailsData) authResult.getPrincipal();
         String accessToken = JWT.create()
                 .withSubject(userDetails.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 10000))
                 .withIssuer(request.getRequestURI())
                 .sign(Algorithm.HMAC512(TOKEN_KEY));
 

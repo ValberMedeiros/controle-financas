@@ -29,7 +29,7 @@ public class ExpenseResourceImpl implements ExpenseResource {
 
     @Override
     @ApiOperation(
-            value = "Retorna a lista de rendas",
+            value = "Retorna a lista de despesas",
             tags = {"Expense creation"},
             authorizations = {@Authorization("JWT")}
     )
@@ -47,7 +47,7 @@ public class ExpenseResourceImpl implements ExpenseResource {
 
     @Override
     @ApiOperation(
-            value = "Cadastra uma nova renda",
+            value = "Cadastra uma nova despesa",
             tags = {"Expense creation"},
             authorizations = {@Authorization("JWT")}
     )
@@ -66,7 +66,7 @@ public class ExpenseResourceImpl implements ExpenseResource {
 
     @Override
     @ApiOperation(
-            value = "Atualiza uma renda existente",
+            value = "Atualiza uma despesa existente",
             tags = {"Expense creation"},
             authorizations = {@Authorization("JWT")}
     )
@@ -89,7 +89,7 @@ public class ExpenseResourceImpl implements ExpenseResource {
 
     @Override
     @ApiOperation(
-            value = "Deleta uma renda existente",
+            value = "Deleta uma despesa existente",
             tags = {"Expense creation"},
             authorizations = {@Authorization("JWT")}
     )
@@ -112,7 +112,7 @@ public class ExpenseResourceImpl implements ExpenseResource {
 
     @Override
     @ApiOperation(
-            value = "Busca uma renda existente por id",
+            value = "Busca uma despesa existente por id",
             tags = {"Expense creation"},
             authorizations = {@Authorization("JWT")}
     )
@@ -128,5 +128,29 @@ public class ExpenseResourceImpl implements ExpenseResource {
             @PathVariable() UUID id
     ) {
         return ResponseEntity.ok(ObjectDataResponse.build(expenseService.findById(id)));
+    }
+
+    @Override
+    @ApiOperation(
+            value = "Atualiza o status de uma despesa",
+            tags = {"Expense creation"},
+            authorizations = {@Authorization("JWT")}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 401, message = "Unauthorized", response = StandardError.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = StandardError.class),
+            @ApiResponse(code = 404, message = "Not Found", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
+            @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
+    })
+    @PutMapping("/{uuid}/status/{status}")
+    public ResponseEntity<Void> updateStatus(
+            @ApiParam(required = true, value = "Novo status da despesa")
+            @PathVariable String status,
+            @ApiParam(required = true, value = "Uuid da despesa a ser atualizada")
+            @PathVariable UUID uuid
+            ) {
+        expenseService.updateExpenseStatus(status, uuid);
+        return null;
     }
 }
