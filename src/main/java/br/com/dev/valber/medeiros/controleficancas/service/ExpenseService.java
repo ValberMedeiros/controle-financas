@@ -18,4 +18,6 @@ public interface ExpenseService {
 
     public void delete(UUID uuid);
 
+    public void updateExpenseStatus(String expenseStatus, UUID uuid);
+
 }
