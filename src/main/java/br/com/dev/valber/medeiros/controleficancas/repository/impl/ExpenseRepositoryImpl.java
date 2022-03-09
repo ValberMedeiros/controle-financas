@@ -14,6 +14,7 @@ import java.util.UUID;
 public class ExpenseRepositoryImpl implements ExpenseRepository {
 
     private JdbcTemplate jdbcTemplate;
+    public static final int DEADLINE_FOR_NOTICE_OF_DEBTS = 6;
 
     public ExpenseRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -95,5 +96,26 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
                 "UPDATE expense SET expense_status = ? WHERE uuid = ?";
 
         return jdbcTemplate.update(sql, status.name(), uuid);
+    }
+
+    @Override
+    public List<ExpenseDTO> getExpenseWithDueDebt() {
+        String sql =
+                "SELECT expense.uuid, expense.amount, expense.description, expense.due_date, expense.expense_status, " +
+        "expense.recurrent, monthly_balance.reference_date as monthlyBalanceReferenceDate " +
+                "FROM expense INNER JOIN monthly_balance " +
+                "ON monthly_balance_uuid = monthly_balance.uuid " +
+                "WHERE expense.due_date - CURRENT_DATE <= "+ DEADLINE_FOR_NOTICE_OF_DEBTS + " and expense.expense_status = 'PENDING'";
+        return jdbcTemplate.query(sql, (rs, rowNum)
+                -> new ExpenseDTO(
+                    UUID.fromString(rs.getString("uuid")),
+                    rs.getString("expense_status"),
+                    rs.getBoolean("recurrent"),
+                    rs.getDate("due_date").toLocalDate(),
+                    rs.getDate("monthlyBalanceReferenceDate").toLocalDate(),
+                    rs.getString("description"),
+                    rs.getBigDecimal("amount")
+                )
+        );
     }
 }

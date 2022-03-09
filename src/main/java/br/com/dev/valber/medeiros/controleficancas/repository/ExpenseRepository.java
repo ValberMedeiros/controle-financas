@@ -21,4 +21,6 @@ public interface ExpenseRepository {
 
     int updateStatus(ExpenseStatus status, UUID uuid);
 
+    List<ExpenseDTO> getExpenseWithDueDebt();
+
 }
