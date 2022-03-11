@@ -5,6 +5,7 @@ import br.com.dev.valber.medeiros.controleficancas.domain.dto.ExpenseDTO;
 import br.com.dev.valber.medeiros.controleficancas.domain.dto.MonthlyBalanceDTO;
 import br.com.dev.valber.medeiros.controleficancas.domain.enums.ExpenseStatus;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.ExpenseRequestDTO;
+import br.com.dev.valber.medeiros.controleficancas.exception.BusinessException;
 import br.com.dev.valber.medeiros.controleficancas.repository.impl.ExpenseRepositoryImpl;
 import br.com.dev.valber.medeiros.controleficancas.repository.impl.MonthlyBalanceRepositoryImpl;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -61,6 +63,21 @@ class ExpenseServiceImplTest {
     }
 
     @Test
+    void findByIdSholdThrowEmptyResultDataAccessExceptionWhenExpenseNotFound() {
+        UUID uuid = UUID.randomUUID();
+
+        when(expenseRepository.findById(any())).thenThrow(EmptyResultDataAccessException.class);
+
+        Exception exception = assertThrows(BusinessException.class, () -> {
+            expenseService.findById(uuid);
+        });
+
+        String expectedMessage = String.format("Expense with uuid %s not found.", uuid);
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
     void update() {
         ExpenseDTO expenseDTO = getExpenseDTO();
         expenseDTO.setExpenseStatus("PENDING");
@@ -68,13 +85,31 @@ class ExpenseServiceImplTest {
         ExpenseRequestDTO expenseUpdatedDTO = getExpenseRequestDTO();
         UUID uuid = UUID.randomUUID();
 
-        when(expenseRepository.update(expenseUpdatedDTO, uuid)).thenReturn(1);
+        when(expenseRepository.update(any(), any())).thenReturn(1);
         when(expenseRepository.findById(uuid)).thenReturn(expenseDTO);
-
+        expenseService.update(uuid, expenseUpdatedDTO);
         var response = expenseService.findById(uuid);
         assertNotEquals("Conta de luz", response.getDescription());
         assertNotEquals("LIQUIDATED", response.getExpenseStatus());
         assertEquals("Conta de Agua", response.getDescription());
+    }
+
+    @Test()
+    void updateSholdThrowEmptyResultDataAccessExceptionWhenExpenseNotFound() {
+        ExpenseRequestDTO expenseUpdatedDTO = getExpenseRequestDTO();
+        UUID uuid = UUID.randomUUID();
+
+        when(expenseRepository.update(any(), any())).thenReturn(1);
+        when(expenseRepository.findById(any())).thenThrow(EmptyResultDataAccessException.class);
+
+        Exception exception = assertThrows(BusinessException.class, () -> {
+            expenseService.update(uuid, expenseUpdatedDTO);
+        });
+
+        String expectedMessage = String.format("Expense with uuid %s not found.", uuid);
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+
     }
 
     @Test
