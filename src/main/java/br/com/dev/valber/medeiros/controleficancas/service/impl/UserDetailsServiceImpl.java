@@ -23,16 +23,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        var userByLogin = Optional.of(new User());
-        try {
-            userByLogin = Optional.of(userRepository.findUserByLogin(username));
-        } catch (EmptyResultDataAccessException ex) {
-            throw new BusinessException("User [\" + username + \"] not found, Authentication failed", "authentication.failed");
-        }
+        User userByLogin = null;
+
         if (username.isEmpty()) {
-            throw new UsernameNotFoundException("User [" + username + "] not found");
+            throw new UsernameNotFoundException("User not found");
         }
-        return new UserDetailsData(userByLogin);
+        try {
+            userByLogin = userRepository.findUserByLogin(username);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new BusinessException("User [" + username + "] not found, Authentication failed", "authentication.failed");
+        }
+
+        return new UserDetailsData(Optional.of(userByLogin));
     }
 
 }
