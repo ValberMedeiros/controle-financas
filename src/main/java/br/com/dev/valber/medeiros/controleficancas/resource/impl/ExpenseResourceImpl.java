@@ -123,6 +123,7 @@ public class ExpenseResourceImpl implements ExpenseResource {
             @ApiResponse(code = 422, message = "Unprocessable Entity", response = StandardError.class),
             @ApiResponse(code = 422, message = "Internal Server Error", response = StandardError.class),
     })
+    @GetMapping("/{id}")
     public ResponseEntity<ObjectDataResponse<ExpenseDTO>> findById(
             @ApiParam(required = true, value = "UUID da renda a ser buscada.")
             @PathVariable() UUID id
@@ -151,6 +152,6 @@ public class ExpenseResourceImpl implements ExpenseResource {
             @PathVariable UUID uuid
             ) {
         expenseService.updateExpenseStatus(status, uuid);
-        return null;
+        return ResponseEntity.ok().build();
     }
 }
