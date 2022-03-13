@@ -38,9 +38,12 @@ public class JWTValidationFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
         } else {
             var attribute = request.getHeader(AUTHORIZATION);
-            if (attribute != null && attribute.startsWith(PREFIX_ATRIBUTE)) {
+            if (attribute != null) {
                 try {
-                    var jwt = attribute.replace(PREFIX_ATRIBUTE, "");
+                    var jwt = attribute;
+                    if (attribute.startsWith(PREFIX_ATRIBUTE)) {
+                        jwt = attribute.replace(PREFIX_ATRIBUTE, "");
+                    }
                     var authenticationToken = getAuthenticationToken(jwt);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     chain.doFilter(request, response);
