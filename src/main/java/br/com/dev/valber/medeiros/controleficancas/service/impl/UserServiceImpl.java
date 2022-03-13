@@ -123,10 +123,6 @@ public class UserServiceImpl implements UserService {
                 .verify(jwt)
                 .getSubject();
 
-        if (usuario == null) {
-            throw new BusinessException("JWT inválido.", "invalid.jwt");
-        }
-
         return new UsernamePasswordAuthenticationToken(usuario, null, new ArrayList<>());
     }
 
