@@ -108,7 +108,7 @@ public class UserResourceImpl implements UserResource {
             @ApiParam(required = true, value = "UUID do usuário a ser deletado.")
             @PathVariable UUID uuid) {
         userService.delete(uuid);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Override
