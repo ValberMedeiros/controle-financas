@@ -35,8 +35,4 @@ public class MonthlyBalanceDTO implements Serializable {
     @OneToMany(mappedBy = "monthlyBalance", orphanRemoval = true)
     private transient List<Expense> expenses = new ArrayList<>();
 
-    public MonthlyBalanceDTO(UUID uuid, LocalDate referenceDate) {
-        this.uuid = uuid;
-        this.referenceDate = referenceDate;
-    }
 }

@@ -38,10 +38,4 @@ public class IncomeDTO implements Serializable {
     @ApiModelProperty(notes = "Ano/MÊs do balanço referente a despesa")
     private LocalDate monthlyBalanceReferenceDate;
 
-    public IncomeDTO(UUID uuid, LocalDate receiptDate, String description, BigDecimal amount) {
-        this.uuid = uuid;
-        this.receiptDate = receiptDate;
-        this.description = description;
-        this.amount = amount;
-    }
 }
