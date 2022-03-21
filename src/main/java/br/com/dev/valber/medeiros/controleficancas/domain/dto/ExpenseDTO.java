@@ -50,12 +50,4 @@ public class ExpenseDTO implements Serializable {
     @ApiModelProperty(notes = "Valor da despesa")
     private BigDecimal amount;
 
-    public ExpenseDTO(String expenseStatus, Boolean recurrent, LocalDate dueDate, LocalDate monthlyBalanceReferenceDate, String description, BigDecimal amount) {
-        this.expenseStatus = expenseStatus;
-        this.recurrent = recurrent;
-        this.dueDate = dueDate;
-        this.monthlyBalanceReferenceDate = monthlyBalanceReferenceDate;
-        this.description = description;
-        this.amount = amount;
-    }
 }

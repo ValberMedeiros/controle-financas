@@ -3,6 +3,7 @@ package br.com.dev.valber.medeiros.controleficancas.repository.impl;
 import br.com.dev.valber.medeiros.controleficancas.domain.dto.IncomeDTO;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.IncomeRequestDTO;
 import br.com.dev.valber.medeiros.controleficancas.repository.IncomeRepository;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -31,13 +32,7 @@ public class IncomeRepositoryImpl implements IncomeRepository {
     public List<IncomeDTO> findAll() {
         String sql =
                 "SELECT uuid, description, amount, receipt_date FROM income";
-        return jdbcTemplate.query(sql, (rs, rowNum)
-                -> new IncomeDTO(
-                        UUID.fromString(rs.getString("uuid")),
-                        rs.getDate("receipt_date").toLocalDate(),
-                        rs.getString("description"),
-                        rs.getBigDecimal("amount")
-                    ));
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(IncomeDTO.class));
     }
 
     @Override
@@ -46,13 +41,7 @@ public class IncomeRepositoryImpl implements IncomeRepository {
                 "SELECT uuid, description, amount, receipt_date " +
                 "FROM income " +
                 "WHERE uuid = ?";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum)
-                -> new IncomeDTO(
-                UUID.fromString(rs.getString("uuid")),
-                rs.getDate("receipt_date").toLocalDate(),
-                rs.getString("description"),
-                rs.getBigDecimal("amount")
-        ), uuid);
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(IncomeDTO.class), uuid);
     }
 
     @Override
