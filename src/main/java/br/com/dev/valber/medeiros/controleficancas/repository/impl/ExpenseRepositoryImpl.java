@@ -4,6 +4,7 @@ import br.com.dev.valber.medeiros.controleficancas.domain.dto.ExpenseDTO;
 import br.com.dev.valber.medeiros.controleficancas.domain.enums.ExpenseStatus;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.ExpenseRequestDTO;
 import br.com.dev.valber.medeiros.controleficancas.repository.ExpenseRepository;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -27,16 +28,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
                 "expense.recurrent, monthly_balance.reference_date as monthlyBalanceReferenceDate " +
                 "FROM expense INNER JOIN monthly_balance " +
                 "ON monthly_balance_uuid = monthly_balance.uuid ";
-        return jdbcTemplate.query(sql, (rs, rowNum)
-                -> new ExpenseDTO(
-                    UUID.fromString(rs.getString("uuid")),
-                    rs.getString("expense_status"),
-                    rs.getBoolean("recurrent"),
-                    rs.getDate("due_date").toLocalDate(),
-                    rs.getDate("monthlyBalanceReferenceDate").toLocalDate(),
-                    rs.getString("description"),
-                    rs.getBigDecimal("amount")
-        ));
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ExpenseDTO.class));
     }
 
     @Override
@@ -47,16 +39,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
                         "FROM expense INNER JOIN monthly_balance " +
                         "ON monthly_balance_uuid = monthly_balance.uuid " +
                         "WHERE expense.uuid = ?";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum)
-                -> new ExpenseDTO(
-                        UUID.fromString(rs.getString("uuid")),
-                        rs.getString("expense_status"),
-                        rs.getBoolean("recurrent"),
-                        rs.getDate("due_date").toLocalDate(),
-                        rs.getDate("monthlyBalanceReferenceDate").toLocalDate(),
-                        rs.getString("description"),
-                        rs.getBigDecimal("amount")
-        ), uuid);
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ExpenseDTO.class), uuid);
     }
 
     @Override
@@ -106,16 +89,6 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
                 "FROM expense INNER JOIN monthly_balance " +
                 "ON monthly_balance_uuid = monthly_balance.uuid " +
                 "WHERE expense.due_date - CURRENT_DATE <= "+ DEADLINE_FOR_NOTICE_OF_DEBTS + " and expense.expense_status = 'PENDING'";
-        return jdbcTemplate.query(sql, (rs, rowNum)
-                -> new ExpenseDTO(
-                    UUID.fromString(rs.getString("uuid")),
-                    rs.getString("expense_status"),
-                    rs.getBoolean("recurrent"),
-                    rs.getDate("due_date").toLocalDate(),
-                    rs.getDate("monthlyBalanceReferenceDate").toLocalDate(),
-                    rs.getString("description"),
-                    rs.getBigDecimal("amount")
-                )
-        );
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ExpenseDTO.class));
     }
 }
