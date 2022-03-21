@@ -6,6 +6,7 @@ on:
     - reopened
     - synchronize
     - ready_for_review
+    - closed
     branches:
       - main
       - develop
