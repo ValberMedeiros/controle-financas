@@ -3,6 +3,7 @@ package br.com.dev.valber.medeiros.controleficancas.repository.impl;
 import br.com.dev.valber.medeiros.controleficancas.domain.dto.*;
 import br.com.dev.valber.medeiros.controleficancas.domain.request.MonthlyBalanceRequestDTO;
 import br.com.dev.valber.medeiros.controleficancas.repository.MonthlyBalanceRepository;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,6 @@ import java.util.UUID;
 @Repository
 public class MonthlyBalanceRepositoryImpl implements MonthlyBalanceRepository {
 
-    public static final String REFERENCE_DATE = "reference_date";
     private final JdbcTemplate jdbcTemplate;
 
     public MonthlyBalanceRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -28,12 +28,7 @@ public class MonthlyBalanceRepositoryImpl implements MonthlyBalanceRepository {
                 "INNER JOIN expense ON monthly_balance.uuid = expense.monthly_balance_uuid " +
                 "WHERE monthly_balance.reference_date = ?" +
                 "GROUP BY monthly_balance.uuid";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum)
-                -> new TotalBalanceDTO(
-                        UUID.fromString(rs.getString("uuid")),
-                        rs.getDate(REFERENCE_DATE).toLocalDate(),
-                        rs.getBigDecimal("total_amount")
-                ), reference);
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(TotalBalanceDTO.class), reference);
     }
 
     @Override
@@ -44,18 +39,7 @@ public class MonthlyBalanceRepositoryImpl implements MonthlyBalanceRepository {
                 "FROM expense INNER JOIN monthly_balance " +
                 "ON monthly_balance_uuid = monthly_balance.uuid WHERE monthly_balance.reference_date = ?";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) ->
-                    new ExpenseDTO(
-                            UUID.fromString(rs.getString("uuid")),
-                            rs.getString("expense_status"),
-                            rs.getBoolean("recurrent"),
-                            rs.getDate("due_date").toLocalDate(),
-                            rs.getDate("monthlyBalanceReferenceDate").toLocalDate(),
-                            rs.getString("description"),
-                            rs.getBigDecimal("amount")
-                    ),
-                    reference
-                );
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ExpenseDTO.class), reference);
     }
 
     @Override
@@ -63,11 +47,7 @@ public class MonthlyBalanceRepositoryImpl implements MonthlyBalanceRepository {
         String sql =
                 "SELECT monthly_balance.uuid, monthly_balance.reference_date " +
                 "FROM monthly_balance";
-        return jdbcTemplate.query(sql, (rs, rowNum)
-                -> new MonthlyBalanceDateReferenceDTO(
-                UUID.fromString(rs.getString("uuid")),
-                rs.getDate(REFERENCE_DATE).toLocalDate()
-        ));
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(MonthlyBalanceDateReferenceDTO.class));
     }
 
     @Override
@@ -93,11 +73,7 @@ public class MonthlyBalanceRepositoryImpl implements MonthlyBalanceRepository {
     public MonthlyBalanceDTO getMonthlyBalance(UUID uuid) {
         String sql =
                 "SELECT * FROM monthly_balance WHERE uuid = ?";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum)
-                -> new MonthlyBalanceDTO(
-                UUID.fromString(rs.getString("uuid")),
-                rs.getDate(REFERENCE_DATE).toLocalDate()
-        ), uuid);
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(MonthlyBalanceDTO.class), uuid);
     }
 
     @Override
@@ -106,9 +82,7 @@ public class MonthlyBalanceRepositoryImpl implements MonthlyBalanceRepository {
                 "SELECT uuid " +
                         "FROM monthly_balance " +
                         "WHERE reference_date = ?";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum)
-                -> UUID.fromString(rs.getString("uuid"))
-        , reference);
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(UUID.class), reference);
     }
 
     @Override
@@ -120,14 +94,7 @@ public class MonthlyBalanceRepositoryImpl implements MonthlyBalanceRepository {
                         "INNER JOIN monthly_balance " +
                         "ON income.monthly_balance_uuid = monthly_balance.uuid " +
                         "WHERE monthly_balance.reference_date = ?";
-        return jdbcTemplate.query(sql, (rs, rowNum)
-                -> new IncomeDTO(
-                        UUID.fromString(rs.getString("uuid")),
-                        rs.getDate("receipt_date").toLocalDate(),
-                        rs.getString("description"),
-                        rs.getBigDecimal("amount"),
-                        rs.getDate("monthlyBalanceReferenceDate").toLocalDate()
-                ), reference
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(IncomeDTO.class), reference
         );
     }
 
@@ -139,12 +106,7 @@ public class MonthlyBalanceRepositoryImpl implements MonthlyBalanceRepository {
                         "INNER JOIN income ON monthly_balance.uuid = income.monthly_balance_uuid " +
                         "WHERE monthly_balance.reference_date = ?" +
                         "GROUP BY monthly_balance.uuid";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum)
-                -> new TotalBalanceDTO(
-                UUID.fromString(rs.getString("uuid")),
-                rs.getDate(REFERENCE_DATE).toLocalDate(),
-                rs.getBigDecimal("total_amount")
-        ), reference);
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(TotalBalanceDTO.class), reference);
     }
 
 }
